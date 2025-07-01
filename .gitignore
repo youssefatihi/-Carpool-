@@ -1,3 +1,8 @@
+# ===========================
+# MONOREPO GITIGNORE
+# This covers both backend (Spring Boot) and frontend (React/Vite)
+# ===========================
+
 # Compiled class files
 *.class
 *.jar
@@ -9,12 +14,22 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
 
 # IntelliJ IDEA
 .idea/
 *.iws
 *.iml
 *.ipr
+out/
 
 # Eclipse
 .project
@@ -33,6 +48,9 @@ tmp/
 # VS Code
 .vscode/
 
+# Claude AI Assistant
+.claude/
+
 # Logs
 *.log
 *.log.*
@@ -43,6 +61,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+pnpm-debug.log*
+
+# React/Vite build outputs
+dist/
+dist-ssr/
+build/
+
+# Dependency lock files (keep package-lock.json but ignore others)
+yarn.lock
+pnpm-lock.yaml
 
 # Runtime data
 pids
@@ -83,6 +111,15 @@ jspm_packages/
 .env.production.local
 .env.test
 
+# Frontend specific
+*.local
+.cache/
+.vite/
+.next/
+.nuxt/
+.output/
+.vercel/
+
 # Build outputs
 dist/
 build/
@@ -95,16 +132,12 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # Temporary files
 *~
 .tmp
 .temp
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
 
 # Spring Boot
 *.jar
@@ -115,14 +148,69 @@ application-local.properties
 application-dev.properties
 application-prod.properties
 
+# H2 Database files
+*.db
+*.sqlite
+*.sqlite3
+*.trace.db
+*.lock.db
+
 # JVM Crash logs
 hs_err_pid*
+replay_pid*
 
-# Gradle
+# Gradle (if used)
 .gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar  
+!gradle/wrapper/gradle-wrapper.jar
 
-#.class
-*.class
+# Package managers
+.pnpm-store/
+.yarn/
+.yarnrc.yml
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+test-results/
+junit.xml
+
+# Editors and IDEs
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+*.code-workspace
+
+# System files
+*.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.backup
+*.bak
+*.orig
+*.rej
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Temporary files
+*~
+.tmp/
+.temp/
+*.tmp
+*.temp
 
