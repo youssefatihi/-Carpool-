@@ -1,161 +1,99 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TripCard from './components/TripCard';
 import SearchBar, { SearchFilters } from './components/SearchBar';
-import { Trip } from './types';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorMessage from './components/ErrorMessage';
+import { useTrips, useTripSearch } from './hooks/useTrips';
 
-// Liste des villes pour l'autocomplétion
 const CITIES = [
   'Paris', 'Lyon', 'Marseille', 'Toulouse', 'Nice', 'Nantes',
   'Strasbourg', 'Bordeaux', 'Lille', 'Rennes', 'Grenoble', 'Montpellier'
 ];
-// Données mockées
-const mockTrips: Trip[] = [
-  {
-    id: 1,
-    departureCity: 'Paris',
-    arrivalCity: 'Lyon',
-    departureAddress: 'Gare de Lyon, Paris',
-    arrivalAddress: 'Gare Part-Dieu, Lyon',
-    departureDate: '2025-07-15T08:00:00',
-    price: 25,
-    availableSeats: 2,
-    totalSeats: 4,
-    description: 'Trajet direct sur autoroute. Musique douce, pauses possibles.',
-    status: 'ACTIVE',
-    carModel: 'Peugeot 308',
-    carColor: 'Gris métallisé',
-    driver: {
-      id: 1,
-      email: 'jean.dupont@example.com',
-      firstName: 'Jean',
-      lastName: 'Dupont',
-      role: 'DRIVER',
-      profilePicture: 'https://i.pravatar.cc/150?u=jean.dupont',
-      rating: 4.7,
-      preferences: {
-        smoking: false,
-        animals: true,
-        music: true
-      }
-    },
-    createdAt: '2025-07-01T10:00:00'
-  },
-  {
-    id: 2,
-    departureCity: 'Lyon',
-    arrivalCity: 'Marseille',
-    departureAddress: 'Bellecour, Lyon',
-    arrivalAddress: 'Vieux-Port, Marseille',
-    departureDate: '2025-07-16T14:30:00',
-    price: 35,
-    availableSeats: 0,
-    totalSeats: 3,
-    description: 'Départ de Bellecour. Non-fumeur uniquement.',
-    status: 'ACTIVE',
-    carModel: 'Renault Clio',
-    carColor: 'Rouge',
-    driver: {
-      id: 2,
-      email: 'marie.martin@example.com',
-      firstName: 'Marie',
-      lastName: 'Martin',
-      role: 'DRIVER',
-      profilePicture: 'https://i.pravatar.cc/150?u=marie.martin',
-      rating: 4.9,
-      preferences: {
-        smoking: false,
-        animals: false,
-        music: true
-      }
-    },
-    createdAt: '2025-07-01T11:00:00'
-  },
-  {
-    id: 3,
-    departureCity: 'Paris',
-    arrivalCity: 'Bordeaux',
-    departureAddress: 'Porte d\'Orléans, Paris',
-    arrivalAddress: 'Gare Saint-Jean, Bordeaux',
-    departureDate: '2025-07-20T07:00:00',
-    price: 45,
-    availableSeats: 3,
-    totalSeats: 3,
-    description: 'Voyage confortable, plusieurs pauses prévues. Bagages bienvenus.',
-    status: 'ACTIVE',
-    carModel: 'Volkswagen Passat',
-    carColor: 'Noir',
-    driver: {
-      id: 3,
-      email: 'pierre.bernard@example.com',
-      firstName: 'Pierre',
-      lastName: 'Bernard',
-      role: 'DRIVER',
-      profilePicture: 'https://i.pravatar.cc/150?u=pierre.bernard',
-      rating: 4.5,
-      preferences: {
-        smoking: false,
-        animals: true,
-        music: false
-      }
-    },
-    createdAt: '2025-07-01T12:00:00'
-  }
-];
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [filteredTrips, setFilteredTrips] = useState<Trip[]>(mockTrips);
-  const [activeFilters, setActiveFilters] = useState<SearchFilters | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  
+  // Hook pour charger tous les trajets
+  const { 
+    trips: allTrips, 
+    loading: loadingAll, 
+    error: errorAll, 
+    totalPages,
+    refresh 
+  } = useTrips(currentPage, 9);
+  
+  // Hook pour la recherche
+  const { 
+    trips: searchResults, 
+    loading: loadingSearch, 
+    error: errorSearch, 
+    searchTrips 
+  } = useTripSearch();
+  
+  // Déterminer quels trajets afficher
+  const displayedTrips = isSearchMode ? searchResults : allTrips;
+  const loading = isSearchMode ? loadingSearch : loadingAll;
+  const error = isSearchMode ? errorSearch : errorAll;
+  
+  // Vérifier si l'utilisateur est connecté au montage
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
   
   const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+  };
   
   const handleBookTrip = (tripId: number) => {
+    if (!isLoggedIn) {
+      alert('Veuillez vous connecter pour réserver un trajet');
+      return;
+    }
     alert(`Réservation pour le trajet ${tripId} (fonctionnalité à implémenter)`);
   };
   
-  const handleSearch = (filters: SearchFilters) => {
-    setActiveFilters(filters);
+  const handleSearch = async (filters: SearchFilters) => {
+    setIsSearchMode(true);
+    setCurrentPage(0); // Reset page
     
-    // Filtrer les trajets
-    const filtered = mockTrips.filter(trip => {
-      // Filtre par ville de départ
-      if (filters.departure && 
-          !trip.departureCity.toLowerCase().includes(filters.departure.toLowerCase())) {
-        return false;
-      }
-      
-      // Filtre par ville d'arrivée
-      if (filters.arrival && 
-          !trip.arrivalCity.toLowerCase().includes(filters.arrival.toLowerCase())) {
-        return false;
-      }
-      
-      // Filtre par date
-      if (filters.date) {
-        const tripDate = new Date(trip.departureDate).toISOString().split('T')[0];
-        if (tripDate !== filters.date) {
-          return false;
-        }
-      }
-      
-      // Filtre par prix
-      if (trip.price < filters.minPrice || trip.price > filters.maxPrice) {
-        return false;
-      }
-      
-      // Filtre par places disponibles
-      if (trip.availableSeats < filters.availableSeats) {
-        return false;
-      }
-      
-      return true;
-    });
+    // Convertir les filtres pour l'API
+    const apiFilters = {
+      departureCity: filters.departure || undefined,
+      arrivalCity: filters.arrival || undefined,
+      date: filters.date || undefined,
+      minPrice: filters.minPrice || undefined,
+      maxPrice: filters.maxPrice || undefined,
+      availableSeats: filters.availableSeats || undefined
+    };
     
-    setFilteredTrips(filtered);
+    await searchTrips(apiFilters);
   };
+  
+  const handleResetSearch = () => {
+    setIsSearchMode(false);
+    setCurrentPage(0);
+  };
+  
+  // Auto-refresh toutes les 30 secondes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isSearchMode) {
+        refresh();
+      }
+    }, 30000);
+    
+    return () => clearInterval(interval);
+  }, [isSearchMode, refresh]);
   
   return (
     <div className="app">
@@ -175,28 +113,71 @@ function App() {
         <SearchBar onSearch={handleSearch} cities={CITIES} />
         
         <div className="results-section">
-          <h2>
-            {activeFilters 
-              ? `${filteredTrips.length} trajet${filteredTrips.length > 1 ? 's' : ''} trouvé${filteredTrips.length > 1 ? 's' : ''}`
-              : 'Trajets disponibles'
-            }
-          </h2>
+          <div className="results-header">
+            <h2>
+              {isSearchMode 
+                ? `${displayedTrips.length} résultat${displayedTrips.length > 1 ? 's' : ''} trouvé${displayedTrips.length > 1 ? 's' : ''}`
+                : 'Tous les trajets'
+              }
+            </h2>
+            {isSearchMode && (
+              <button onClick={handleResetSearch} className="btn-clear-search">
+                ❌ Effacer la recherche
+              </button>
+            )}
+          </div>
           
-          {filteredTrips.length === 0 ? (
+          {loading ? (
+            <LoadingSpinner message="Chargement des trajets..." />
+          ) : error ? (
+            <ErrorMessage 
+              error={error} 
+              onRetry={isSearchMode ? undefined : refresh} 
+            />
+          ) : displayedTrips.length === 0 ? (
             <div className="no-results">
-              <p>😕 Aucun trajet ne correspond à vos critères.</p>
-              <p>Essayez de modifier vos filtres ou de rechercher d'autres villes.</p>
+              <p>😕 Aucun trajet disponible.</p>
+              {isSearchMode && (
+                <p>Essayez de modifier vos critères de recherche.</p>
+              )}
             </div>
           ) : (
-            <div className="trips-list">
-              {filteredTrips.map(trip => (
-                <TripCard 
-                  key={trip.id}
-                  trip={trip}
-                  onBook={handleBookTrip}
-                />
-              ))}
-            </div>
+            <>
+              <div className="trips-list">
+                {displayedTrips.map(trip => (
+                  <TripCard 
+                    key={trip.id}
+                    trip={trip}
+                    onBook={handleBookTrip}
+                  />
+                ))}
+              </div>
+              
+              {/* Pagination pour tous les trajets */}
+              {!isSearchMode && totalPages > 1 && (
+                <div className="pagination">
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                    disabled={currentPage === 0}
+                    className="btn-pagination"
+                  >
+                    ← Précédent
+                  </button>
+                  
+                  <span className="page-info">
+                    Page {currentPage + 1} sur {totalPages}
+                  </span>
+                  
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+                    disabled={currentPage === totalPages - 1}
+                    className="btn-pagination"
+                  >
+                    Suivant →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>

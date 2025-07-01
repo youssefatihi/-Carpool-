@@ -150,7 +150,7 @@ cd covoiturage
 
 ```bash
 # Naviguer vers le backend
-cd covoiturage-backend
+cd backend
 
 # Installer les dépendances
 mvn clean install
@@ -163,7 +163,7 @@ mvn -Dmaven.wagon.http.ssl.insecure=true clean install
 
 ```bash
 # Dans un nouveau terminal, naviguer vers le frontend
-cd ../covoiturage-frontend
+cd ../frontend
 
 # Installer les dépendances
 npm install
@@ -178,7 +178,7 @@ npm install
 ### 1. Démarrer le Backend (Terminal 1)
 
 ```bash
-cd covoiturage-backend
+cd backend
 mvn spring-boot:run
 ```
 
@@ -191,7 +191,7 @@ Vérifier que le backend fonctionne :
 ### 2. Démarrer le Frontend (Terminal 2)
 
 ```bash
-cd covoiturage-frontend
+cd frontend
 npm run dev
 ```
 
@@ -228,7 +228,7 @@ Console H2 accessible (en dev) : http://localhost:8080/api/h2-console
 
 ```
 covoiturage/
-├── covoiturage-backend/        # Backend Spring Boot
+├── backend/        # Backend Spring Boot
 │   ├── src/
 │   │   ├── main/
 │   │   │   ├── java/         # Code source Java
@@ -236,7 +236,7 @@ covoiturage/
 │   ├── pom.xml               # Dépendances Maven
 │   └── README.md
 │
-└── covoiturage-frontend/       # Frontend React
+└── frontend/       # Frontend React
     ├── src/
     │   ├── components/       # Composants React
     │   ├── pages/           # Pages de l'app
