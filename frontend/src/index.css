@@ -755,3 +755,352 @@ main p {
   color: #6b7280;
   font-weight: 500;
 }
+/* Pages génériques */
+.page-header {
+  text-align: center;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+/* HomePage */
+.home-page .hero {
+  text-align: center;
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem;
+  margin-bottom: 4rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: white;
+  color: #764ba2;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #764ba2;
+}
+
+/* Featured trips */
+.featured-trips {
+  margin-bottom: 4rem;
+}
+
+.featured-trips h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.trips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.see-more {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.link-see-more {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* How it works */
+.how-it-works {
+  background: #f9fafb;
+  padding: 3rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.step {
+  position: relative;
+}
+
+.step-number {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 48px;
+  margin-bottom: 1rem;
+}
+
+/* Trip Detail Page */
+.trip-detail-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  padding: 1rem 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.breadcrumb a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.trip-detail-container {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.trip-main-info h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.trip-datetime {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.trip-price-booking {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.price .amount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.price .label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.seats-info {
+  flex: 1;
+}
+
+.seats-count {
+  font-weight: 500;
+  color: #059669;
+}
+
+.seats-count.full {
+  color: #dc2626;
+}
+
+.btn-book-large {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-book-large:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn-book-large:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Details sections */
+.trip-details-grid {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.detail-section {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.detail-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.itinerary .location {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.location .icon {
+  font-size: 1.5rem;
+}
+
+/* Driver section */
+.driver-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.driver-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.driver-info h3 {
+  margin-bottom: 0.5rem;
+}
+
+.rating {
+  color: #f59e0b;
+  margin-bottom: 0.5rem;
+}
+
+.preferences {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.preferences span {
+  padding: 0.25rem 0.75rem;
+  background: white;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Detail actions */
+.detail-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-back, .btn-share {
+  background: #f3f4f6;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-back:hover, .btn-share:hover {
+  background: #e5e7eb;
+}
+
+/* NavLink active */
+.nav-link.active {
+  font-weight: 600;
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Not Found Page */
+.not-found-page {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.not-found-page h1 {
+  font-size: 6rem;
+  color: #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.not-found-page h2 {
+  font-size: 2rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.not-found-page p {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}

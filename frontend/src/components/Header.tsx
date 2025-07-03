@@ -1,26 +1,50 @@
+import { NavLink, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
-    isLoggedIn?: boolean;
-    userName?: string;
-    onLogin?: () => void;
-    onLogout?: () => void;
+  isLoggedIn?: boolean;
+  userName?: string;
+  onLogin?: () => void;
+  onLogout?: () => void;
 }
 
-function Header({isLoggedIn=false,userName,onLogin,onLogout}: HeaderProps) {
-      return (
+function Header({ isLoggedIn = false, userName, onLogin, onLogout }: HeaderProps) {
+  const navigate = useNavigate();
+  
+  const handleLoginClick = () => {
+    if (onLogin) onLogin();
+    navigate('/login');
+  };
+  
+  return (
     <header className="header">
       <div className="header-container">
-        {/* Logo / Titre */}
-        <div className="header-brand">
+        {/* Logo avec lien vers accueil */}
+        <NavLink to="/" className="header-brand">
           <h1>🚗 Covoiturage</h1>
-        </div>
+        </NavLink>
         
-        {/* Navigation */}
+        {/* Navigation avec NavLink pour le style actif */}
         <nav className="header-nav">
-          <a href="/" className="nav-link">Accueil</a>
-          <a href="/trips" className="nav-link">Trajets</a>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            end // exact match pour la route "/"
+          >
+            Accueil
+          </NavLink>
+          <NavLink 
+            to="/trips" 
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            Trajets
+          </NavLink>
           {isLoggedIn && (
-            <a href="/my-trips" className="nav-link">Mes trajets</a>
+            <NavLink 
+              to="/my-trips" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Mes trajets
+            </NavLink>
           )}
         </nav>
         
@@ -34,7 +58,7 @@ function Header({isLoggedIn=false,userName,onLogin,onLogout}: HeaderProps) {
               </button>
             </div>
           ) : (
-            <button onClick={onLogin} className="btn-login">
+            <button onClick={handleLoginClick} className="btn-login">
               Connexion
             </button>
           )}
