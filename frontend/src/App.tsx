@@ -3,7 +3,7 @@ import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import TripListPage from './pages/TripListPage';
 import TripDetailPage from './pages/TripDetailPage';
-import NotFoundPage from './pages/NotfoundPage';
+import NotFoundPage from './pages/NotFoundPage';
 function App() {
   return (
     <BrowserRouter>
