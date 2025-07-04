@@ -1,66 +1,116 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+// src/components/Header.tsx (version améliorée)
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   isLoggedIn?: boolean;
-  userName?: string;
-  onLogin?: () => void;
   onLogout?: () => void;
+  showMenuButton?: boolean;
+  onMenuClick?: () => void;
 }
 
-function Header({ isLoggedIn = false, userName, onLogin, onLogout }: HeaderProps) {
+function Header({ 
+  isLoggedIn = false, 
+  onLogout, 
+  showMenuButton = false,
+  onMenuClick 
+}: HeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   
-  const handleLoginClick = () => {
-    if (onLogin) onLogin();
-    navigate('/login');
-  };
+  // Déterminer si on est sur une page spéciale
+  const isHomePage = location.pathname === '/';
+  const isDashboard = location.pathname.startsWith('/dashboard');
   
   return (
-    <header className="header">
+    <header className={`header ${isDashboard ? 'header-dashboard' : ''}`}>
       <div className="header-container">
-        {/* Logo avec lien vers accueil */}
+        {/* Menu button pour mobile */}
+        {showMenuButton && (
+          <button 
+            className="menu-button"
+            onClick={onMenuClick}
+            aria-label="Menu"
+          >
+            <span className="menu-icon">☰</span>
+          </button>
+        )}
+        
+        {/* Logo */}
         <NavLink to="/" className="header-brand">
           <h1>🚗 Covoiturage</h1>
         </NavLink>
         
-        {/* Navigation avec NavLink pour le style actif */}
-        <nav className="header-nav">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-            end // exact match pour la route "/"
-          >
-            Accueil
-          </NavLink>
-          <NavLink 
-            to="/trips" 
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            Trajets
-          </NavLink>
-          {isLoggedIn && (
+        {/* Navigation principale - cachée si sidebar active */}
+        {!showMenuButton && (
+          <nav className="header-nav">
             <NavLink 
-              to="/my-trips" 
+              to="/" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              end
+            >
+              Accueil
+            </NavLink>
+            <NavLink 
+              to="/trips" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
-              Mes trajets
+              Trajets
             </NavLink>
-          )}
-        </nav>
+            <NavLink 
+              to="/how-it-works" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Comment ça marche
+            </NavLink>
+          </nav>
+        )}
         
         {/* Actions utilisateur */}
         <div className="header-actions">
           {isLoggedIn ? (
-            <div className="user-menu">
-              <span className="user-name">👤 {userName}</span>
+            <>
+              {/* Bouton publier un trajet - visible sauf sur dashboard */}
+              {!isDashboard && (
+                <button 
+                  onClick={() => navigate('/trips/new')}
+                  className="btn-publish"
+                >
+                  + Publier un trajet
+                </button>
+              )}
+              
+              {/* Menu utilisateur */}
+              <div className="user-menu">
+                <button className="user-menu-trigger">
+                  <img 
+                    src="https://i.pravatar.cc/150?u=user" 
+                    alt="Avatar"
+                    className="user-avatar"
+                  />
+                </button>
+                
+                {/* Dropdown menu (à implémenter) */}
+              </div>
+              
               <button onClick={onLogout} className="btn-logout">
                 Déconnexion
               </button>
-            </div>
+            </>
           ) : (
-            <button onClick={handleLoginClick} className="btn-login">
-              Connexion
-            </button>
+            <>
+              <button 
+                onClick={() => navigate('/login')}
+                className="btn-text"
+              >
+                Connexion
+              </button>
+              <button 
+                onClick={() => navigate('/register')}
+                className="btn-primary"
+              >
+                Inscription
+              </button>
+            </>
           )}
         </div>
       </div>

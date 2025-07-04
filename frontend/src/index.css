@@ -1104,3 +1104,259 @@ main p {
   color: #6b7280;
   margin-bottom: 2rem;
 }
+/* Layout principal */
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-body {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+
+/* Conteneur principal avec variations */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+}
+
+.main-content.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-content.full-width {
+  max-width: 100%;
+}
+
+.main-content.with-sidebar {
+  margin-left: 250px; /* Largeur de la sidebar */
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 60px; /* Hauteur du header */
+  bottom: 0;
+  width: 250px;
+  background: #1f2937;
+  color: white;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Desktop : sidebar toujours visible */
+@media (min-width: 768px) {
+  .main-content.with-sidebar {
+    margin-left: 250px;
+  }
+  
+  .sidebar {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: none;
+  }
+}
+
+/* Mobile : sidebar en overlay */
+@media (max-width: 767px) {
+  .main-content.with-sidebar {
+    margin-left: 0;
+  }
+  
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+}
+
+/* Navigation sidebar */
+.sidebar-nav ul {
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  color: #d1d5db;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.sidebar-link:hover {
+  background: #374151;
+  color: white;
+}
+
+.sidebar-link.active {
+  background: #2563eb;
+  color: white;
+}
+
+.sidebar-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #60a5fa;
+}
+
+.sidebar-icon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.sidebar-badge {
+  margin-left: auto;
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+}
+
+/* Section utilisateur sidebar */
+.sidebar-user {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #374151;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.sidebar-user-info {
+  flex: 1;
+}
+
+.sidebar-user-name {
+  font-weight: 500;
+  margin: 0;
+}
+
+.sidebar-user-role {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb ol {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.breadcrumb a {
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.breadcrumb .separator {
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
+
+.breadcrumb [aria-current="page"] {
+  color: #6b7280;
+}
+
+/* Header amélioré */
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: white;
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .menu-button {
+    display: block;
+  }
+}
+
+.btn-publish {
+  background: white;
+  color: #2563eb;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-publish:hover {
+  background: #f3f4f6;
+}
+
+/* Thèmes de layout */
+.theme-dashboard .header {
+  background: #1f2937;
+  border-bottom: 1px solid #374151;
+}
+
+.theme-minimal .main-content {
+  padding: 0;
+}
+
+/* Transitions fluides */
+* {
+  transition-property: none;
+}
+
+.sidebar,
+.main-content,
+.sidebar-link {
+  transition-property: all;
+  transition-timing-function: ease-in-out;
+}
